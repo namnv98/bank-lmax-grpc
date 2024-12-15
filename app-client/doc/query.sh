@@ -1,0 +1,1 @@
+curl --location 'http://localhost:8900/api/v1/balance/query/1'

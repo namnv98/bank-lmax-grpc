@@ -1,0 +1,21 @@
+server:
+  port: 8080
+grpc:
+  server:
+    port: 9092
+    host: localhost
+
+spring.application.name: admin-app
+server.port: 8900
+---
+spring.threads.virtual.enabled: true
+---
+request.timeout.milliseconds: 1000
+---
+cluster:
+  leader:
+    host: localhost
+    port: 9091
+
+request-buffer:
+  pow: 16
