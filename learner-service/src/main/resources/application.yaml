@@ -8,11 +8,11 @@ cluster:
     groupId: command-log-learner-group
 
 learner:
-  bufferSize: 1024
+  bufferSize: 2048
   pollInterval: 100
   maxSnapshotCheckCircles: 50
   snapshotFragmentSize: 100000
-  snapshotLifeTime: 20
+  snapshotLifeTime: 10
 
 spring.datasource:
   url: jdbc:mysql://localhost:3306/p2pc

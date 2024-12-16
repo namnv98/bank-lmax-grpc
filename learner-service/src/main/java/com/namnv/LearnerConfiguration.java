@@ -96,7 +96,7 @@ public class LearnerConfiguration {
 
     @Bean
     Disruptor<ReplayBufferEvent> replayBufferEventDisruptor(ReplayBufferHandler replayBufferHandler) {
-        return new ReplayBufferDisruptorDSL(replayBufferHandler).build(1 << 5, new SleepingWaitStrategy());
+        return new ReplayBufferDisruptorDSL(replayBufferHandler).build(2048, new SleepingWaitStrategy());
     }
 
     @Bean
