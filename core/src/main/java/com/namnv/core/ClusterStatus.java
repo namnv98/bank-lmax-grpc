@@ -6,5 +6,5 @@ public enum ClusterStatus {
   NOT_AVAILABLE,
   ACTIVE;
 
-  public static final AtomicReference<ClusterStatus> STATE = new AtomicReference<>(ACTIVE);
+  public static final AtomicReference<ClusterStatus> STATE = new AtomicReference<>(NOT_AVAILABLE);
 }
