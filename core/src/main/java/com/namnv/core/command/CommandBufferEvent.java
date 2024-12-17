@@ -3,6 +3,7 @@ package com.namnv.core.command;
 import com.namnv.core.BaseCommand;
 import com.namnv.core.BaseResult;
 import com.namnv.core.BufferEvent;
+import io.vertx.grpc.server.GrpcServerResponse;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,12 @@ public class CommandBufferEvent implements BufferEvent {
 
   private BaseCommand command;
   private BaseResult result;
+  private GrpcServerResponse grpcServerResponse;
+
+  public CommandBufferEvent(BaseResult result, GrpcServerResponse grpcServerResponse) {
+    this.result = result;
+    this.grpcServerResponse = grpcServerResponse;
+  }
 
   public CommandBufferEvent(String replyChannel, String correlationId, BaseCommand command) {
     this.replyChannel = replyChannel;
@@ -26,5 +33,6 @@ public class CommandBufferEvent implements BufferEvent {
     this.correlationId = event.correlationId;
     this.command = event.command;
     this.result = event.result;
+    this.grpcServerResponse=event.grpcServerResponse;
   }
 }

@@ -53,7 +53,7 @@ public class BalanceGrpcCommand extends BalanceCommandServiceGrpc.BalanceCommand
 
       @Override
       public void onCompleted() {
-        log.info("{} on completed command streaming", replyChannel);
+//        log.info("{} on completed command streaming", replyChannel);
         simpleReplier.repliers.remove(replyChannel);
         responseObserver.onCompleted();
       }

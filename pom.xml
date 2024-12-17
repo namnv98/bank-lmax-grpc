@@ -17,6 +17,7 @@
         <module>environment</module>
         <module>follower-service</module>
         <module>repo</module>
+        <module>leader-vertx-service</module>
     </modules>
 
 </project>
