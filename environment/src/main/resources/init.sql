@@ -19,3 +19,6 @@ CREATE TABLE p2pc.snapshots
 
 INSERT INTO p2pc.snapshots (`id`, `value`) VALUES ('LAST_KAFKA_OFFSET', '-1');
 INSERT INTO p2pc.snapshots (`id`, `value`) VALUES ('LAST_BALANCE_ID', '0');
+
+INSERT INTO p2pc.balances (`id`, `amount`, `precision`, `active`) VALUES (1, 0, 2, true);
+INSERT INTO p2pc.balances (`id`, `amount`, `precision`, `active`) VALUES (2, 0, 2, true);
