@@ -8,9 +8,10 @@ import com.namnv.core.command.CommandBufferEventDispatcher;
 import com.namnv.proto.BalanceCommandServiceGrpc;
 import com.namnv.proto.BalanceProto;
 import io.grpc.stub.StreamObserver;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,14 +47,13 @@ public class BalanceGrpcCommand extends BalanceCommandServiceGrpc.BalanceCommand
 
       @Override
       public void onError(Throwable throwable) {
-        log.error("{} on command streaming error {}", replyChannel, throwable.getMessage());
+        System.out.println("onError");
         simpleReplier.repliers.remove(replyChannel);
         responseObserver.onError(throwable);
       }
 
       @Override
       public void onCompleted() {
-//        log.info("{} on completed command streaming", replyChannel);
         simpleReplier.repliers.remove(replyChannel);
         responseObserver.onCompleted();
       }

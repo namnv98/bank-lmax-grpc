@@ -34,11 +34,13 @@ public class BalanceGrpcResourceLeader {
       var balanceCommandGrpc = new BalanceGrpcCommand(commandBufferEventDispatcher, replier);
       var balanceQueryGrpc = new BalanceGrpcQuery(balances);
       server =
-          ServerBuilder.forPort(9091)
-              .addService(balanceQueryGrpc)
-              .addService(balanceCommandGrpc)
-              .executor(MoreExecutors.directExecutor())
-              .build();
+        ServerBuilder.forPort(9091)
+          .addService(balanceQueryGrpc)
+          .addService(balanceCommandGrpc)
+//          .intercept(new ConcurrentStreamInterceptor())
+          .executor(MoreExecutors.directExecutor())
+          .build();
+
       server.start();
     } catch (Exception e) {
       System.exit(-9);

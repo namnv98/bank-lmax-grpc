@@ -8,13 +8,14 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.isNull;
+
 @Component
 @RequiredArgsConstructor
 public class ReplyBufferHandlerAdapter implements ReplyBufferHandler {
 
   private final SimpleReplier simpleReplier;
 
-  @Override
   public void onEvent(ReplyBufferEvent event, long sequence, boolean endOfBatch) throws Exception {
     Optional.ofNullable(simpleReplier.repliers.get(event.getReplyChannel()))
       .ifPresent(

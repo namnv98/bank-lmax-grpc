@@ -13,6 +13,7 @@ import com.namnv.core.command.*;
 import com.namnv.core.reply.ReplyBufferEvent;
 import com.namnv.core.reply.ReplyBufferEventDispatcher;
 import com.namnv.proto.BalanceProto;
+import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.net.NetServerOptions;
@@ -41,7 +42,7 @@ public class GrpcServerVerticle extends AbstractVerticle {
     var a = new GrpcServerOptions();
     a.setMaxMessageSize(1000000);
 
-    GrpcServer grpcServer = GrpcServer.server(vertx,a);
+    GrpcServer grpcServer = GrpcServer.server(vertx, a);
 
     HttpServer server = vertx.createHttpServer();
     var commandBufferJournaler = new CommandBufferJournalerImpl(initProducer(),
@@ -50,19 +51,24 @@ public class GrpcServerVerticle extends AbstractVerticle {
     Disruptor<CommandBufferEvent> eventDisruptor =
       new Disruptor<CommandBufferEvent>(
         CommandBufferEvent::new,
-        1024 * 4,
+        1 << 16,
         DaemonThreadFactory.INSTANCE,
         ProducerType.MULTI,
         new BusySpinWaitStrategy());
 
     eventDisruptor
-      .handleEventsWith(new CommandBufferHandler1Impl());
+      .handleEventsWith(commandBufferJournaler).then(new CommandBufferHandler1Impl());
     eventDisruptor.start();
+    var bb = new BaseCommand(BalanceProto.CommandLog.newBuilder().setDepositCommand(BalanceProto.DepositCommand.newBuilder().setAmount(123).setId(123).build()).build());
+    com.namnv.HelloReply aa = com.namnv.HelloReply.newBuilder().setMessage("ok").build();
+
 
     grpcServer.callHandler(com.namnv.VertxGreeterGrpcServer.SayHello, request -> {
-      eventDisruptor.publishEvent((commandBufferEvent, l) -> {
-        commandBufferEvent.copy(new CommandBufferEvent(
-          null, request.response()));
+      request.handler(event -> {
+        eventDisruptor.publishEvent((commandBufferEvent, l) -> {
+          commandBufferEvent.copy(new CommandBufferEvent(
+            null, request.response(), bb));
+        });
       });
     });
 
@@ -90,16 +96,7 @@ public class GrpcServerVerticle extends AbstractVerticle {
 
     @Override
     public void onEvent(CommandBufferEvent event, long sequence, boolean endOfBatch) {
-      try {
-        var res = event.getGrpcServerResponse();
-
-//        if (!res.end().isComplete()) {
-         res.end(a);
-//        }
-
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      event.getGrpcServerResponse().end(a);
     }
   }
 

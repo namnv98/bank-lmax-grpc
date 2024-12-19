@@ -33,12 +33,7 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
-        <!-- Kafka client -->
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>3.5.0</version> <!-- Hoặc phiên bản tương thích với Kafka -->
-        </dependency>
+
 
         <dependency>
             <groupId>org.apache.kafka</groupId>

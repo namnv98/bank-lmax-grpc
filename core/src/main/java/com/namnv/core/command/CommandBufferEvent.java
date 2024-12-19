@@ -17,9 +17,10 @@ public class CommandBufferEvent implements BufferEvent {
   private BaseResult result;
   private GrpcServerResponse grpcServerResponse;
 
-  public CommandBufferEvent(BaseResult result, GrpcServerResponse grpcServerResponse) {
+  public CommandBufferEvent(BaseResult result, GrpcServerResponse grpcServerResponse, BaseCommand command) {
     this.result = result;
     this.grpcServerResponse = grpcServerResponse;
+    this.command = command;
   }
 
   public CommandBufferEvent(String replyChannel, String correlationId, BaseCommand command) {

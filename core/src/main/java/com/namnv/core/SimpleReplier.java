@@ -8,6 +8,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleReplier {
-  public final Map<String, StreamObserver<BalanceProto.BaseResult>> repliers =
-      new ConcurrentHashMap<>();
+  public final Map<String, StreamObserver<BalanceProto.BaseResult>> repliers = new ConcurrentHashMap<>();
 }
