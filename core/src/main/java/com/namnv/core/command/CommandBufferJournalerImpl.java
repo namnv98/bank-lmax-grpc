@@ -54,6 +54,7 @@ public class CommandBufferJournalerImpl implements CommandBufferJournaler {
                     .addAllLogs(commandLogs)
                     .build();
             producer.send(new ProducerRecord<>(commandLogKafkaProperties.getTopic(), commandLogsMessage.toByteArray())).get();
+            producer.flush();
         }
         buffers.clear();
         buffers.add(new ArrayList<>(leaderProperties.getLogsChunkSize()));

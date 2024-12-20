@@ -18,6 +18,7 @@
         <module>follower-service</module>
         <module>repo</module>
         <module>leader-vertx-service</module>
+        <module>benchmark</module>
     </modules>
 
 </project>
