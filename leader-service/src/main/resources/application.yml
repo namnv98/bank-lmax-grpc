@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8089
   grpc:
     port: 9090
 
@@ -10,10 +10,10 @@ cluster:
     groupId: command-log-leader-group
 
 spring.datasource:
-  url: jdbc:mysql://localhost:3306/p2pc
-  username: root
-  password: root
-  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:postgresql://localhost:5432/p2pc
+  username: admin
+  password: admin
+  driver-class-name: org.postgresql.Driver
 
 spring.jpa:
   open-in-view: false

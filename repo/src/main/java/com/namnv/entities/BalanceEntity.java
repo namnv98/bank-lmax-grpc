@@ -19,7 +19,7 @@ public class BalanceEntity {
 
   private long amount;
 
-  @Column(name = "`precision`")
+  @Column(name = "precision")
   private int precision;
 
   private boolean active;

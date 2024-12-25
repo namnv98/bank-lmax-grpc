@@ -49,13 +49,12 @@ public class AccountRepositoryAdapter implements AccountRepository {
     entityManager
         .createNativeQuery(
             """
-                    CREATE TEMPORARY TABLE temp_balances
-                    (
-                        id          BIGINT PRIMARY KEY,
-                        amount      BIGINT  NOT NULL DEFAULT 0,
-                        `precision` INT     NOT NULL DEFAULT 2,
-                        active      BOOLEAN NOT NULL DEFAULT FALSE
-                    );
+                CREATE TEMPORARY TABLE temp_balances(
+                id          BIGINT PRIMARY KEY,
+                amount      BIGINT  NOT NULL DEFAULT 0,
+                precision   INT     NOT NULL DEFAULT 2,
+                active      BOOLEAN NOT NULL DEFAULT FALSE
+                )
                 """)
         .executeUpdate();
 
@@ -76,12 +75,16 @@ public class AccountRepositoryAdapter implements AccountRepository {
     entityManager
         .createNativeQuery(
             """
-                    INSERT INTO balances (id, amount, `precision`, active)
-                    SELECT id, amount, `precision`, active FROM temp_balances
-                    ON DUPLICATE KEY UPDATE amount = VALUES(amount), `precision` = VALUES(`precision`), active = VALUES(active);
+                  INSERT INTO balances (id, amount, precision, active)
+                  SELECT id, amount, precision, active FROM temp_balances
+                  ON CONFLICT (id)
+                  DO UPDATE SET
+                      amount = EXCLUDED.amount,
+                      precision = EXCLUDED.precision,
+                      active = EXCLUDED.active;
                 """)
         .executeUpdate();
-    entityManager.createNativeQuery("DROP TEMPORARY TABLE temp_balances;").executeUpdate();
+    entityManager.createNativeQuery("DROP TABLE IF EXISTS temp_balances CASCADE;").executeUpdate();
   }
 
   @Override
