@@ -1,22 +1,24 @@
-package org.starquake;
+package namnv.producer;
 
 import io.aeron.Publication;
+import io.aeron.archive.client.AeronArchive;
 import io.aeron.archive.codecs.SourceLocation;
 import io.aeron.driver.MediaDriver;
-import io.aeron.archive.client.AeronArchive;
 import io.aeron.driver.ThreadingMode;
 import org.agrona.concurrent.UnsafeBuffer;
 
 public class RecordingProducer {
     // Change from endpoint to explicit publish
     private static final String RECORDING_CHANNEL =
-            "aeron:ipc";  // Send TO archive, control FROM our IP
+            "aeron:udp?control-mode=dynamic|control=172.16.0.11:40456";
     private static final int MESSAGE_LENGTH = 32;
     private static final int STREAM_ID = 10;
 
     public static void main(String[] args) {
+        String archiveDirPath = System.getProperty("archive.dir", System.getProperty("user.dir") + "/aeron-service/producer");
+
         MediaDriver.Context driverCtx = new MediaDriver.Context()
-                .aeronDirectoryName("b")
+//                .aeronDirectoryName(archiveDirPath)
                 .threadingMode(ThreadingMode.SHARED)
                 .dirDeleteOnShutdown(true)
                 .dirDeleteOnStart(true);
@@ -26,13 +28,11 @@ public class RecordingProducer {
 
             // Connect to Archive
             AeronArchive.Context archiveCtx = new AeronArchive.Context()
-                    .controlRequestChannel("aeron:udp?endpoint=127.0.0.1:8010")
-                    .controlResponseChannel("aeron:udp?endpoint=127.0.0.1:8020");
+                    .controlRequestChannel("aeron:udp?endpoint=172.16.0.5:9001")
+                    .controlResponseChannel("aeron:udp?endpoint=172.16.0.11:8020");
 
             try (AeronArchive aeronArchive = AeronArchive.connect(archiveCtx)) {
                 System.out.println("Connected to Archive");
-
-                // Start Recording
                 long recordingId = aeronArchive.startRecording(RECORDING_CHANNEL, STREAM_ID, SourceLocation.REMOTE);
                 System.out.println("Started recording with ID: " + recordingId);
 

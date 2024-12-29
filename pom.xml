@@ -19,7 +19,7 @@
     <module>repo</module>
     <module>leader-vertx-service</module>
     <module>benchmark</module>
-    <module>gg</module>
+    <module>aeron-service</module>
   </modules>
 
 </project>

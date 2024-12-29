@@ -106,8 +106,10 @@ public class RecordingReplayer {
     }
 
     public static void main(String[] args) {
+        String archiveDirPath = System.getProperty("archive.dir", System.getProperty("user.dir") + "/aeron-service/replayer");
+
         MediaDriver.Context driverCtx = new MediaDriver.Context()
-                .aeronDirectoryName("c")
+                .aeronDirectoryName(archiveDirPath)
                 .threadingMode(ThreadingMode.SHARED)
                 .dirDeleteOnShutdown(true)
                 .dirDeleteOnStart(true);
