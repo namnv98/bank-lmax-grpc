@@ -131,29 +131,29 @@ services:
       - type: tmpfs
         target: /dev/shm
     depends_on:
-      recording:
-        condition: service_healthy
-        required: true
-
-  recording:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.customerId=1", "-cp", "/app/application.jar" ,"namnv.producer.RecordingProducer"]
-    networks:
-      aeron_net:
-        ipv4_address: 172.16.0.11
-    volumes:
-      - type: tmpfs
-        target: /dev/shm
-    depends_on:
       node0:
         condition: service_healthy
         required: true
-    healthcheck:
-      test: [ "CMD-SHELL", "ps aux | grep -v grep | grep -q 'RecordingProducer' && echo 'Producer healthy and standing by...' || exit 1" ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 10s
-      start_interval: 5s
+#
+#  recording:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.customerId=1", "-cp", "/app/application.jar" ,"namnv.producer.RecordingProducer"]
+#    networks:
+#      aeron_net:
+#        ipv4_address: 172.16.0.11
+#    volumes:
+#      - type: tmpfs
+#        target: /dev/shm
+#    depends_on:
+#      node0:
+#        condition: service_healthy
+#        required: true
+#    healthcheck:
+#      test: [ "CMD-SHELL", "ps aux | grep -v grep | grep -q 'RecordingProducer' && echo 'Producer healthy and standing by...' || exit 1" ]
+#      interval: 5s
+#      timeout: 3s
+#      retries: 10
+#      start_period: 10s
+#      start_interval: 5s

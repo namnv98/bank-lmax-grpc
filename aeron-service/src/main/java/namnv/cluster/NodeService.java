@@ -46,7 +46,6 @@ public class NodeService implements ClusteredService {
             final int offset,
             final int length,
             final Header header) {
-
         final long correlationId = buffer.getLong(offset + CORRELATION_ID_OFFSET);
         final long customerId = buffer.getLong(offset + CUSTOMER_ID_OFFSET);
         final long price = buffer.getLong(offset + PRICE_OFFSET);

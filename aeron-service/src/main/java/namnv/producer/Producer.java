@@ -12,6 +12,7 @@ import org.agrona.ExpandableArrayBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.BackoffIdleStrategy;
 import org.agrona.concurrent.IdleStrategy;
+import org.agrona.concurrent.UnsafeBuffer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,8 +92,12 @@ public class Producer implements EgressListener {
         actionBidBuffer.putLong(CUSTOMER_ID_OFFSET, customerId);
         actionBidBuffer.putLong(PRICE_OFFSET, price);
 
+      UnsafeBuffer buffer = new UnsafeBuffer(new byte[32]);
+      String message = "Hello, Recorded World!";
+      buffer.putStringWithoutLengthAscii(0, message);
+
         idleStrategy.reset();
-        while (aeronCluster.offer(actionBidBuffer, 0, BID_MESSAGE_LENGTH) < 0) {
+        while (aeronCluster.offer(buffer, 0, BID_MESSAGE_LENGTH) < 0) {
             idleStrategy.idle(aeronCluster.pollEgress());
         }
 

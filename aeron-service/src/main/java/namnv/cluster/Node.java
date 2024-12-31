@@ -77,6 +77,7 @@ public class Node {
 
     @SuppressWarnings("try")
     public static void main(final String[] args) {
+
         final int nodeId = parseInt(System.getProperty("aeron.cluster.tutorial.nodeId"));
 
         final String[] hostnames = new String[]{"172.16.0.5", "172.16.0.6", "172.16.0.7"};
@@ -97,14 +98,17 @@ public class Node {
         final AeronArchive.Context replicationArchiveContext = new AeronArchive.Context()
                 .controlResponseChannel("aeron:udp?endpoint=" + hostname + ":0");
 
+        int recordingEventsPort = 40456;
+      final String recordingEventsChannel =
+        "aeron:udp?control-mode=dynamic|control=" + hostname + ":" + recordingEventsPort;
+
         final Archive.Context archiveContext = new Archive.Context()
                 .aeronDirectoryName(aeronDirName)
                 .archiveDir(new File(baseDir, "archive"))
                 .controlChannel(udpChannel(nodeId, hostname, ARCHIVE_CONTROL_PORT_OFFSET))
-                .archiveClientContext(replicationArchiveContext)
+//                .archiveClientContext(replicationArchiveContext)
                 .localControlChannel("aeron:ipc?term-length=64k")
-//                .recordingEventsEnabled(true)
-//                .recordingEventsChannel("aeron:udp?control-mode=dynamic|control=" + hostname + ":40456")
+//                .recordingEventsChannel(recordingEventsChannel)
 //                .recordingEventsStreamId(10)
 //                .controlStreamId(10)
 //                .recordingEventsEnabled(true)
