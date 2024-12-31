@@ -12,25 +12,24 @@ volumes:
   archive-storage:
 
 services:
-#  archive:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "-Daeron.cluster.tutorial.nodeId=0", "-cp", "/app/application.jar"  ,"namnv.archive.HorizonArchive"]
-#    networks:
-#      aeron_net:
-#        ipv4_address: 172.16.0.2
-#    volumes:
-#      - type: tmpfs
-#        target: /dev/shm
-#      - archive-storage:/archive
-#    healthcheck:
-#      test: [ "CMD-SHELL", "ps aux | grep -v grep | grep -q 'HorizonArchive' && echo 'Aeron Archive started' || exit 1" ]
-#      interval: 5s
-#      timeout: 3s
-#      retries: 10
-#      start_period: 10s
-#      start_interval: 5s
+  archive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "-Daeron.cluster.tutorial.nodeId=0", "-cp", "/app/application.jar"  ,"namnv.archive.HorizonArchive"]
+    networks:
+      aeron_net:
+        ipv4_address: 172.16.0.2
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+    healthcheck:
+      test: [ "CMD-SHELL", "ps aux | grep -v grep | grep -q 'HorizonArchive' && echo 'Aeron Archive started' || exit 1" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+      start_interval: 5s
 
   node0:
     build:
@@ -43,10 +42,10 @@ services:
     volumes:
       - type: tmpfs
         target: /dev/shm
-#    depends_on:
-#      archive:
-#        condition: service_healthy
-#        required: true
+    depends_on:
+      archive:
+        condition: service_healthy
+        required: true
     healthcheck:
       test: [ "CMD-SHELL", "ps aux | grep -v grep | grep -q 'Node' && echo 'Started Cluster Node' || exit 1" ]
       interval: 5s
@@ -54,30 +53,30 @@ services:
       retries: 10
       start_period: 10s
       start_interval: 5s
-  node1:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.nodeId=1", "-cp", "/app/application.jar" ,"namnv.cluster.Node"]
-    networks:
-      aeron_net:
-        ipv4_address: 172.16.0.6
-    volumes:
-      - type: tmpfs
-        target: /dev/shm
-
-
-  node3:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.nodeId=2", "-cp", "/app/application.jar" ,"namnv.cluster.Node"]
-    networks:
-      aeron_net:
-        ipv4_address: 172.16.0.7
-    volumes:
-      - type: tmpfs
-        target: /dev/shm
+#  node1:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.nodeId=1", "-cp", "/app/application.jar" ,"namnv.cluster.Node"]
+#    networks:
+#      aeron_net:
+#        ipv4_address: 172.16.0.6
+#    volumes:
+#      - type: tmpfs
+#        target: /dev/shm
+#
+#
+#  node3:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.nodeId=2", "-cp", "/app/application.jar" ,"namnv.cluster.Node"]
+#    networks:
+#      aeron_net:
+#        ipv4_address: 172.16.0.7
+#    volumes:
+#      - type: tmpfs
+#        target: /dev/shm
 
   producer:
     build:
@@ -134,7 +133,7 @@ services:
       node0:
         condition: service_healthy
         required: true
-#
+
 #  recording:
 #    build:
 #      context: .
@@ -147,7 +146,7 @@ services:
 #      - type: tmpfs
 #        target: /dev/shm
 #    depends_on:
-#      node0:
+#      archive:
 #        condition: service_healthy
 #        required: true
 #    healthcheck:

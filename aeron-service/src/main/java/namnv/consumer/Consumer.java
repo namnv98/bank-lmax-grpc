@@ -40,7 +40,7 @@ public class Consumer implements EgressListener {
 
         printOutput(
                 "SessionMessage(" + clusterSessionId + ", " + correlationId + "," +
-                        customerId + ", " + currentPrice + ", " + bidSucceed + ")");
+                        customerId + ", " + currentPrice + ", " + bidSucceed + ")"+ " position: " + header.position());
     }
 
     public void onSessionEvent(

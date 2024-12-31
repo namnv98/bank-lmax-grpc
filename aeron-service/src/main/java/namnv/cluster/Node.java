@@ -80,7 +80,7 @@ public class Node {
 
         final int nodeId = parseInt(System.getProperty("aeron.cluster.tutorial.nodeId"));
 
-        final String[] hostnames = new String[]{"172.16.0.5", "172.16.0.6", "172.16.0.7"};
+        final String[] hostnames = new String[]{"172.16.0.5"};
 
         final String hostname = hostnames[nodeId];
         final File baseDir = new File(System.getProperty("user.dir"), "node" + nodeId);

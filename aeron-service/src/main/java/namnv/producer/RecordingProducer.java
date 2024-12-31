@@ -9,10 +9,11 @@ import org.agrona.concurrent.UnsafeBuffer;
 
 public class RecordingProducer {
   private static final String AERON_UDP_ENDPOINT = "aeron:udp?endpoint=";
-  private static final String ARCHIVE_HOST = "172.16.0.5";
+  private static final String ARCHIVE_HOST = "172.16.0.2";
   private static final String THIS_HOST = "172.16.0.11";
-  private static final int ARCHIVE_CONTROL_PORT = 9001;
-  private static final int ARCHIVE_EVENT_PORT = 17000;
+
+  private static final int ARCHIVE_CONTROL_PORT = 8010;
+  private static final int ARCHIVE_EVENT_PORT = 8020;
 
   // Change from endpoint to explicit publish
   private static final String RECORDING_CHANNEL = "aeron:udp?control-mode=dynamic|control=172.16.0.11:40456";
@@ -33,6 +34,7 @@ public class RecordingProducer {
 
       // Connect to Archive
       AeronArchive.Context archiveCtx = new AeronArchive.Context()
+//        .aeronDirectoryName(archiveDirPath)
         .controlRequestChannel(AERON_UDP_ENDPOINT + ARCHIVE_HOST + ":" + ARCHIVE_CONTROL_PORT)
         .recordingEventsChannel(AERON_UDP_ENDPOINT + ARCHIVE_HOST + ":" + ARCHIVE_EVENT_PORT)
         .controlResponseChannel(AERON_UDP_ENDPOINT + THIS_HOST + ":0");
@@ -56,7 +58,6 @@ public class RecordingProducer {
             UnsafeBuffer buffer = new UnsafeBuffer(new byte[MESSAGE_LENGTH]);
             String message = "Hello, Recorded World!";
             buffer.putStringWithoutLengthAscii(0, message + i);
-
 
             System.out.println("Attempting to publish message...");
             long result;
