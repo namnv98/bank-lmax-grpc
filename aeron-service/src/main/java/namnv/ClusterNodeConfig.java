@@ -7,9 +7,7 @@ public class ClusterNodeConfig {
   public static final int CUSTOMER_ID_OFFSET = CORRELATION_ID_OFFSET + BitUtil.SIZE_OF_LONG;
   public static final int PRICE_OFFSET = CUSTOMER_ID_OFFSET + BitUtil.SIZE_OF_LONG;
   public static final int BID_MESSAGE_LENGTH = PRICE_OFFSET + BitUtil.SIZE_OF_LONG;
-  public static final int CHANNEL_NAME_OFFSET = PRICE_OFFSET + Long.BYTES; // Offset cho String
   public static final int BID_SUCCEEDED_OFFSET = BID_MESSAGE_LENGTH;
-  public static final int EGRESS_MESSAGE_LENGTH = BID_SUCCEEDED_OFFSET + BitUtil.SIZE_OF_BYTE;
 
   public static final int SNAPSHOT_CUSTOMER_ID_OFFSET = 0;
   public static final int SNAPSHOT_PRICE_OFFSET = SNAPSHOT_CUSTOMER_ID_OFFSET + BitUtil.SIZE_OF_LONG;

@@ -12,6 +12,7 @@ import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.BackoffIdleStrategy;
 import org.agrona.concurrent.IdleStrategy;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class Consumer implements EgressListener {
         final boolean bidSucceed = 0 != buffer.getByte(offset + BID_SUCCEEDED_OFFSET);
 
         printOutput(
-                "SessionMessage(" + clusterSessionId + ", " + correlationId + "," +
-                        customerId + ", " + currentPrice + ", " + bidSucceed + ")"+ " position: " + header.position());
+                "SessionMessage(" + Instant.now() + "," + clusterSessionId + ", " + correlationId + "," +
+                        customerId + ", " + currentPrice + ", " + bidSucceed + ")" + " position: " + header.position());
     }
 
     public void onSessionEvent(
@@ -109,8 +110,7 @@ public class Consumer implements EgressListener {
                                 .egressChannel("aeron:udp?endpoint=239.255.255.1:4300|interface=172.16.0.9|ttl=16")
                                 .aeronDirectoryName(mediaDriver.aeronDirectoryName())
                                 .ingressChannel("aeron:udp")
-                                .ingressEndpoints(ingressEndpoints)))
-        {
+                                .ingressEndpoints(ingressEndpoints))) {
             client.bidInAuction(aeronCluster);
         }
     }

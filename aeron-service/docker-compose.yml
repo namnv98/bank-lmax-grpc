@@ -118,21 +118,21 @@ services:
 #        condition: service_healthy
 #        required: true
 
-  replayer:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.customerId=1", "-cp", "/app/application.jar" ,"namnv.consumer.RecordingReplayer"]
-    networks:
-      aeron_net:
-        ipv4_address: 172.16.0.10
-    volumes:
-      - type: tmpfs
-        target: /dev/shm
-    depends_on:
-      node0:
-        condition: service_healthy
-        required: true
+#  replayer:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: [ "java", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED","-Daeron.cluster.tutorial.customerId=1", "-cp", "/app/application.jar" ,"namnv.live.BasicReplayMergeReceiver"]
+#    networks:
+#      aeron_net:
+#        ipv4_address: 172.16.0.10
+#    volumes:
+#      - type: tmpfs
+#        target: /dev/shm
+#    depends_on:
+#      node0:
+#        condition: service_healthy
+#        required: true
 
 #  recording:
 #    build:
